@@ -6,11 +6,12 @@ from datetime import datetime
 from hachoir.metadata import extractMetadata
 from hachoir.parser import createParser
 from helper.utils import progress_for_pyrogram, humanbytes, convert
-from helper.database import AshutoshGoswami24
+from helper.database import madflixbotz
 from config import Config
 import os
 import time
 import re
+import asyncio
 
 renaming_operations = {}
 
@@ -89,7 +90,6 @@ def extract_quality(filename):
     print(f"Quality: {unknown_quality}")
     return unknown_quality
     
-
 def extract_episode_number(filename):    
     # Try Pattern 1
     match = re.search(pattern1, filename)
@@ -131,7 +131,7 @@ def extract_episode_number(filename):
     return None
 
 # Example Usage:
-filename = "Naruto Shippuden S01 - EP07 - 1080p [Dual Audio] @AshutoshGoswami24.mkv"
+filename = "Naruto Shippuden S01 - EP07 - 1080p [Dual Audio] @Madflix_Bots.mkv"
 episode_number = extract_episode_number(filename)
 print(f"Extracted Episode Number: {episode_number}")
 
@@ -140,8 +140,8 @@ print(f"Extracted Episode Number: {episode_number}")
 async def auto_rename_files(client, message):
     user_id = message.from_user.id
     firstname = message.from_user.first_name
-    format_template = await AshutoshGoswami24.get_format_template(user_id)
-    media_preference = await AshutoshGoswami24.get_media_preference(user_id)
+    format_template = await madflixbotz.get_format_template(user_id)
+    media_preference = await madflixbotz.get_media_preference(user_id)
 
     if not format_template:
         return await message.reply_text("Please Set An Auto Rename Format First Using /autorename")
@@ -164,8 +164,6 @@ async def auto_rename_files(client, message):
 
     print(f"Original File Name: {file_name}")
     
-    
-
 # Check whether the file is already being renamed or has been renamed recently
     if file_id in renaming_operations:
         elapsed_time = (datetime.now() - renaming_operations[file_id]).seconds
@@ -222,8 +220,8 @@ async def auto_rename_files(client, message):
 
         upload_msg = await download_msg.edit("Trying To Uploading.....")
         ph_path = None
-        c_caption = await AshutoshGoswami24.get_caption(message.chat.id)
-        c_thumb = await AshutoshGoswami24.get_thumbnail(message.chat.id)
+        c_caption = await madflixbotz.get_caption(message.chat.id)
+        c_thumb = await madflixbotz.get_thumbnail(message.chat.id)
 
         caption = c_caption.format(filename=new_file_name, filesize=humanbytes(message.document.file_size), duration=convert(duration)) if c_caption else f"**{new_file_name}**"
 
@@ -238,7 +236,6 @@ async def auto_rename_files(client, message):
             img = Image.open(ph_path)
             img.resize((320, 320))
             img.save(ph_path, "JPEG")    
-        
 
         try:
             type = media_type  # Use 'media_type' variable instead
@@ -286,10 +283,7 @@ async def auto_rename_files(client, message):
 # Remove the entry from renaming_operations after successful renaming
         del renaming_operations[file_id]
 
-
-
-
-# PandaWep
+# Jishu Developer 
 # Don't Remove Credit 🥺
-# Telegram Channel @PandaWep
-# Developer https://github.com/PandaWep
+# Telegram Channel @Madflix_Bots
+# Developer @JishuDeveloper
